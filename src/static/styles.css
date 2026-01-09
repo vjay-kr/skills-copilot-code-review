@@ -619,6 +619,40 @@ footer {
   right: 15px;
 }
 
+/* Announcement banner */
+.announcement {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  width: 100%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.announcement.info {
+  background-color: var(--info);
+  color: white;
+}
+.announcement.warning {
+  background-color: var(--warning);
+  color: #2b2b2b;
+}
+.announcement.error {
+  background-color: var(--error);
+  color: white;
+}
+.announcement .dismiss-btn {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
 #user-status {
   display: flex;
   align-items: center;
@@ -663,4 +697,11 @@ footer {
 
 #logout-button:hover {
   background-color: rgba(255, 255, 255, 0.3);
+}
+.announcement-banner {
+  background-color: #4caf50;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  font-weight: bold;
 }

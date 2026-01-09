@@ -25,6 +25,43 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeLoginModal = document.querySelector(".close-login-modal");
   const loginMessage = document.getElementById("login-message");
 
+  // Announcement banner element
+  const announcementBanner = document.getElementById("announcement-banner");
+
+  async function loadAnnouncement() {
+    if (!announcementBanner) return;
+    try {
+      const res = await fetch('/activities/announcement');
+      if (!res.ok) return;
+      const data = await res.json();
+      const message = data.message || "";
+      const level = data.level || 'info';
+      if (!message) return;
+
+      // Do not show if user previously dismissed the same message
+      const dismissed = localStorage.getItem('announcementDismissed');
+      if (dismissed === message) return;
+
+      // Populate banner
+      announcementBanner.textContent = message;
+      announcementBanner.classList.remove('hidden');
+      announcementBanner.classList.add(level);
+
+      const dismissBtn = document.createElement('button');
+      dismissBtn.className = 'dismiss-btn';
+      dismissBtn.setAttribute('aria-label', 'Dismiss announcement');
+      dismissBtn.innerHTML = '&times;';
+      dismissBtn.addEventListener('click', () => {
+        localStorage.setItem('announcementDismissed', message);
+        announcementBanner.classList.add('hidden');
+      });
+
+      announcementBanner.appendChild(dismissBtn);
+    } catch (e) {
+      console.error('Failed to load announcement', e);
+    }
+  }
+
   // Activity categories with corresponding colors
   const activityTypes = {
     sports: { label: "Sports", color: "#e8f5e9", textColor: "#2e7d32" },
@@ -864,5 +901,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize app
   checkAuthentication();
   initializeFilters();
+  // Load announcement (if any) then fetch activities
+  loadAnnouncement();
   fetchActivities();
 });

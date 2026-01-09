@@ -3,6 +3,7 @@ Endpoints for the High School Management System API
 """
 
 from fastapi import APIRouter, HTTPException, Query
+import os
 from fastapi.responses import RedirectResponse
 from typing import Dict, Any, Optional, List
 
@@ -136,3 +137,14 @@ def unregister_from_activity(activity_name: str, email: str, teacher_username: O
             status_code=500, detail="Failed to update activity")
 
     return {"message": f"Unregistered {email} from {activity_name}"}
+
+
+@router.get("/announcement")
+def get_announcement():
+    """Return a site-wide announcement.
+
+    This reads the `ANNOUNCEMENT` environment variable if present and
+    returns it to the frontend. When empty, an empty message is returned.
+    """
+    message = os.getenv("ANNOUNCEMENT", "")
+    return {"message": message, "level": "info", "dismissible": True}
